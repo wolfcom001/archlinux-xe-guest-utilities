@@ -38,6 +38,7 @@ build() {
   export CFLAGS
   export PYTHON=python2
   cd "$srcdir/uclibc-sources"
+  sed -i.bak s/-Werror//g Config.mk tools/libxc/Makefile tools/misc/lomount/Makefile
   make -C tools/include
   make -C tools/libxc
   make -C tools/xenstore
@@ -54,7 +55,6 @@ package_xenstore() {
     make -C ""$srcdir"/uclibc-sources/tools/$f" DESTDIR="$pkgdir" SBINDIR=/usr/bin install
   done
   cd "$srcdir/$pkgbase-$pkgver"
-  sed -i.bak s/-Werror//g Config.mk tools/libxc/Makefile tools/misc/lomount/Makefile
   install -Dm644 "COPYING.LGPL" "$pkgdir/usr/share/licenses/$pkgname/COPYING.LGPL"
   install -Dm644 "COPYING" "$pkgdir/usr/share/licenses/$pkgname/COPYING"
   install -Dm644 $srcdir/proc-xen.mount "$pkgdir/usr/lib/systemd/system/proc-xen.mount"
